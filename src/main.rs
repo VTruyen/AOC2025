@@ -7,6 +7,25 @@ enum Direction {
     RIGHT,
 }
 
+struct dial {
+    ticking: i32,
+    position: i32
+}
+
+impl dial {
+    fn new() -> Self {
+        dial {
+            ticking: 0,
+            position: 50
+        }
+    }
+
+    fn turn(&mut self, direction: Direction, value: i32) {
+        self.position = direction.apply(value, self.position);
+        if self.position == 0 { self.ticking += 1 }
+    }
+}
+
 fn parse_line(line: &str) -> (Direction, i32) {
     let (dir, rest) = line.split_at(1);
 
@@ -36,21 +55,16 @@ impl Direction {
 fn main() {
     let mut position: i32 = 50;
     let lines = read_lines("src/real_input1.txt").expect("Failed to read lines");
+    let mut dial = dial::new();
 
-    let count_hits_zero = lines.fold(0, |acc, line| {
+    lines.for_each(|line| {
         let line = line.expect("Could not read line");
         let (direction, value) = parse_line(&line);
 
-        position = direction.apply(value, position);
-
-        if position == 0 {
-            acc + 1
-        } else {
-            acc
-        }
+        dial.turn(direction, value);
     });
 
-    println!("Result: {}", count_hits_zero);
+    println!("Result: {}", dial.ticking);
 }
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
