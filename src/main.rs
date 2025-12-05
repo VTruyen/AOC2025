@@ -7,20 +7,34 @@ enum Direction {
     RIGHT,
 }
 
-struct dial {
+struct Dial {
     ticking: i32,
     position: i32
 }
 
-impl dial {
+impl Dial {
     fn new() -> Self {
-        dial {
+        Dial {
             ticking: 0,
             position: 50
         }
     }
+    fn count_crossing_zero(&self, direction: &Direction, value: i32) -> i32 {
+        let mut count = value / 100;
+        let rem = value % 100;
+
+        if self.position != 0 {
+            count += match direction {
+                Direction::LEFT => self.position - rem < 0,
+                Direction::RIGHT => self.position + rem > 100,
+            } as i32;
+        }
+
+        count
+    }
 
     fn turn(&mut self, direction: Direction, value: i32) {
+        self.ticking += self.count_crossing_zero(&direction, value);
         self.position = direction.apply(value, self.position);
         if self.position == 0 { self.ticking += 1 }
     }
@@ -53,9 +67,8 @@ impl Direction {
 }
 
 fn main() {
-    let mut position: i32 = 50;
     let lines = read_lines("src/real_input1.txt").expect("Failed to read lines");
-    let mut dial = dial::new();
+    let mut dial = Dial::new();
 
     lines.for_each(|line| {
         let line = line.expect("Could not read line");
