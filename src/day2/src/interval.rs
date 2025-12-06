@@ -31,3 +31,17 @@ pub fn determine_id_status(id: i64) -> Id {
         Id::Valid(id)
     }
 }
+pub fn determine_id_compose_of_pattern(id: i64) -> Id {
+    let id_str = id.to_string();
+    let len = id_str.len();
+    for pattern_len in 1..=len / 2 {
+        if len % pattern_len == 0 {
+            let pattern = &id_str[0..pattern_len];
+            let repeated = pattern.repeat(len / pattern_len);
+            if repeated == id_str {
+                return Id::Invalid(id);
+            }
+        }
+    }
+    Id::Valid(id)
+}
