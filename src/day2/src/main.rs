@@ -7,7 +7,7 @@ use crate::interval::{determine_id_status, Interval};
 mod interval;
 
 fn main() {
-    let lines = read_lines("src/example_input.txt").expect("Could not read lines");
+    let lines = read_lines("src/real_input.txt").expect("Could not read lines");
     let sum = lines.flat_map(|line| line.ok())
         .flat_map(|line| parse_line(&line))
         .flat_map(|interval: Interval| {
@@ -22,6 +22,8 @@ fn main() {
         .sum::<i64>();
     println!("Sum of invalid IDs: {}", sum);
 }
+// 1227775554
+// 1227775554
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where P: AsRef<Path>, {
