@@ -8,6 +8,23 @@ pub enum Id {
     Invalid(i64),
 }
 
+impl Interval {
+    pub fn produce_ids_part1(&self) -> Vec<Id> {
+        let mut ids = Vec::new();
+        for id in self.start..=self.end {
+            ids.push(determine_id_status(id));
+        }
+        ids
+    }
+    pub fn produce_ids_part2(&self) -> Vec<Id> {
+        let mut ids = Vec::new();
+        for id in self.start..=self.end {
+            ids.push(determine_id_compose_of_pattern(id));
+        }
+        ids
+    }
+}
+
 impl Id {
     pub(crate) fn is_valid(&self) -> bool {
         matches!(self, Id::Valid(_))

@@ -1,23 +1,19 @@
+use crate::interval::Interval;
 use std::fs::File;
 use std::io;
 use std::io::BufRead;
 use std::path::Path;
-use crate::interval::{determine_id_compose_of_pattern, determine_id_status, Interval};
 
 mod interval;
 
 fn main() {
-    let lines = read_lines("src/example_input.txt").expect("Could not read lines");
+    let lines = read_lines("src/real_input.txt").expect("Could not read lines");
     let sum = lines.flat_map(|line| line.ok())
         .flat_map(|line| parse_line(&line))
         .flat_map(|interval: Interval| {
-            let mut results = Vec::new();
-            for id in interval.start..=interval.end {
-                results.push(determine_id_compose_of_pattern(id));
-            }
-            results
+            interval.produce_ids_part2()
         })
-        .filter( |id| !id.is_valid())
+        .filter(|id| !id.is_valid())
         .map(|id| id.value())
         .sum::<i64>();
     println!("Sum of invalid IDs: {}", sum);
