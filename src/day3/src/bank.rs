@@ -1,7 +1,3 @@
-use std::collections::{HashMap, HashSet};
-use std::process::id;
-use std::str::Chars;
-
 pub struct Bank {
     pub number_str : String
 }
