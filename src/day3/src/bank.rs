@@ -1,3 +1,7 @@
+use std::collections::{HashMap, HashSet};
+use std::process::id;
+use std::str::Chars;
+
 pub struct Bank {
     pub number_str : String
 }
@@ -19,7 +23,7 @@ impl MaxJolt {
 }
 
 impl Bank {
-    pub fn compute_max_jolt(&self) -> i32 {
+    pub fn compute_max_jolt_part1(&self) -> i32 {
         self.number_str
             .chars()
             .map(|c| c.to_digit(10).unwrap() as i32)
@@ -35,5 +39,35 @@ impl Bank {
                 acc
             })
             .sum()
+    }
+
+    pub fn compute_max_jolt_part2(&self) -> String {
+        let required = 12;
+
+        let digits: Vec<char> = self.number_str.chars().collect();
+        let n = digits.len();
+        if required >= n {
+            return self.number_str.to_string();
+        }
+        let mut result = Vec::new();
+        let mut start = 0;
+        for i in 0..required {
+            let remaining = required - i - 1;
+            let end = n - remaining;
+            let mut max_digit = digits[start];
+            let mut max_pos = start;
+
+            for j in start..end {
+                if digits[j] > max_digit {
+                    max_digit = digits[j];
+                    max_pos = j;
+                }
+            }
+
+            result.push(max_digit);
+            start = max_pos + 1;
+        }
+
+        result.into_iter().collect()
     }
 }

@@ -8,7 +8,8 @@ fn main() {
     let result = lines.map(|line| {
         let line = line.expect("Could not read line");
         Bank { number_str: line }
-    }).map(|bank| bank.compute_max_jolt())
-    .sum::<i32>();
-    println!("{}", result);
+    }).map(|bank| bank.compute_max_jolt_part2())
+        .map(|res| res.parse::<i64>().unwrap_or(0))
+        .sum::<i64>();
+    println!("Result: {}", result);
 }
