@@ -1,0 +1,9 @@
+[package]
+name = "day4"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+input_reader = { path = "../input_reader" }
+strum = "0.26"
+strum_macros = "0.26"
